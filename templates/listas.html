@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Listas de Compras</title>
+    {{ bootstrap.load_css() }}
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="mb-4">Listas de Compras</h1>
+        <div class="mb-3">
+            <input type="text" id="nomeLista" class="form-control" placeholder="Nome da lista" required>
+            <input type="text" id="evento" class="form-control mt-2" placeholder="Evento" required>
+            <input type="date" id="dataEvento" class="form-control mt-2" required>
+            <input type="text" id="participantes" class="form-control mt-2" placeholder="Participantes (separados por vírgula)">
+            <button id="addLista" class="btn btn-success mt-2">Adicionar Lista</button>
+        </div>
+
+        <h2>Listas Cadastradas:</h2>
+        <ul id="listaCadastrada" class="list-group">
+            {% for lista in listas %}
+            <li class="list-group-item">
+                <a href="/listas/{{ lista.id }}">{{ lista.nome_lista }}</a> - Evento: {{ lista.evento }} - Data: {{ lista.data_evento }} - Participantes: {{ lista.participantes }}
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <script>
+        const listaCadastrada = document.getElementById('listaCadastrada');
+        const addListaButton = document.getElementById('addLista');
+
+        addListaButton.addEventListener('click', async () => {
+            const nomeLista = document.getElementById('nomeLista').value;
+            const evento = document.getElementById('evento').value;
+            const dataEvento = document.getElementById('dataEvento').value;
+            const participantes = document.getElementById('participantes').value;
+
+            await fetch('/listas', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ nome_lista: nomeLista, evento, data_evento: dataEvento, participantes })
+            });
+
+            document.getElementById('nomeLista').value = '';
+            document.getElementById('evento').value = '';
+            document.getElementById('dataEvento').value = '';
+            document.getElementById('participantes').value = '';
+            location.reload();  // Recarrega a página para atualizar a lista
+        });
+    </script>
+    {{ bootstrap.load_js() }}
+</body>
+</html>

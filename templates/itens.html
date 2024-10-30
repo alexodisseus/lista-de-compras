@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Itens da Lista</title>
+    {{ bootstrap.load_css() }}
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="mb-4">{{ lista.nome_lista }}</h1>
+        <h3>Evento: {{ lista.evento }}</h3>
+        <h4>Data: {{ lista.data_evento }}</h4>
+        <h4>Participantes: {{ lista.participantes }}</h4>
+
+        <h2>Adicionar Itens:</h2>
+        <input type="text" id="itemNome" class="form-control" placeholder="Nome do item" required>
+        <input type="number" id="itemQuantidade" class="form-control mt-2" placeholder="Quantidade" required>
+        <input type="number" id="itemPreco" class="form-control mt-2" placeholder="Preço" required>
+        <button id="addItem" class="btn btn-primary mt-2">Adicionar Item</button>
+
+        <h2>Itens Cadastrados:</h2>
+        <ul id="itemList" class="list-group"></ul>
+    </div>
+<script>
+    const itemList = document.getElementById('itemList');
+    const addItemButton = document.getElementById('addItem');
+
+    async function fetchItems() {
+        const response = await fetch(`/listas/${{ lista.id }}/items`);
+        const items = await response.json();
+        itemList.innerHTML = '';
+        items.forEach(item => {
+            const li = document.createElement('li');
+            li.className = 'list-group-item';
+            li.textContent = `${item.nome} - Quantidade: ${item.quantidade} - Preço: R$ ${item.preco.toFixed(2)}`;
+            itemList.appendChild(li);
+        });
+    }
+
+    addItemButton.addEventListener('click', async () => {
+        const nome = document.getElementById('itemNome').value;
+        const quantidade = document.getElementById('itemQuantidade').value;
+        const preco = document.getElementById('itemPreco').value;
+
+        await fetch(`/listas/${{ lista.id }}/items`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ nome, quantidade: parseInt(quantidade), preco: parseFloat(preco) })
+        });
+
+        document.getElementById('itemNome').value = '';
+        document.getElementById('itemQuantidade').value = '';
+        document.getElementById('itemPreco').value = '';
+        fetchItems();
+    });
+
+    fetchItems();
+</script>
+
+    {{ bootstrap.load_js() }}
+</body>
+</html>

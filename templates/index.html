@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Compras</title>
+    {{ bootstrap.load_css() }}
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="mb-4">Cadastrar Lista de Compras</h1>
+        <div class="mb-3">
+            <input type="text" id="nomeLista" class="form-control" placeholder="Nome da lista" required>
+            <input type="text" id="evento" class="form-control mt-2" placeholder="Evento" required>
+            <input type="date" id="dataEvento" class="form-control mt-2" required>
+            <input type="text" id="participantes" class="form-control mt-2" placeholder="Participantes (separados por vírgula)">
+            <button id="addLista" class="btn btn-success mt-2">Adicionar Lista</button>
+        </div>
+
+        <h2>Adicionar Itens à Lista:</h2>
+        <input type="text" id="itemNome" class="form-control" placeholder="Nome do item" required>
+        <input type="number" id="itemQuantidade" class="form-control mt-2" placeholder="Quantidade" required>
+        <input type="number" id="itemPreco" class="form-control mt-2" placeholder="Preço" required>
+        <button id="addItem" class="btn btn-primary mt-2">Adicionar Item</button>
+
+        <h2>Listas Cadastradas:</h2>
+        <ul id="listaCadastrada" class="list-group"></ul>
+    </div>
+
+    <script>
+        const listaCadastrada = document.getElementById('listaCadastrada');
+        const addListaButton = document.getElementById('addLista');
+
+        async function fetchListas() {
+            const response = await fetch('/listas');
+            const listas = await response.json();
+            listaCadastrada.innerHTML = '';
+            listas.forEach(lista => {
+                const li = document.createElement('li');
+                li.className = 'list-group-item';
+                li.textContent = `${lista.nome_lista} - Evento: ${lista.evento} - Data: ${lista.data_evento} - Participantes: ${lista.participantes}`;
+                listaCadastrada.appendChild(li);
+            });
+        }
+
+        addListaButton.addEventListener('click', async () => {
+            const nomeLista = document.getElementById('nomeLista').value;
+            const evento = document.getElementById('evento').value;
+            const dataEvento = document.getElementById('dataEvento').value;
+            const participantes = document.getElementById('participantes').value;
+
+            await fetch('/listas', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ nome_lista: nomeLista, evento, data_evento: dataEvento, participantes })
+            });
+
+            document.getElementById('nomeLista').value = '';
+            document.getElementById('evento').value = '';
+            document.getElementById('dataEvento').value = '';
+            document.getElementById('participantes').value = '';
+            fetchListas();
+        });
+
+        fetchListas();
+    </script>
+    {{ bootstrap.load_js() }}
+</body>
+</html>
