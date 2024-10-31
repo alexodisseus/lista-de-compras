@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bem-vindo!</title>
+    {{ bootstrap.load_css() }}
+    <style>
+        html, body {
+            height: 100%;
+        }
+        .full-height {
+            height: 100vh; /* 100% da altura da viewport */
+        }
+    </style>
+</head>
+<body>
+    <div class="container d-flex justify-content-center align-items-center full-height">
+        <div class="text-center">
+            <h1>Bem-vindo ao Meu Aplicativo!</h1>
+            <p class="lead">Estamos felizes em tê-lo aqui.</p>
+            <a href="{{ url_for('admin.login') }}" class="btn btn-primary">Login</a>
+            <a href="{{ url_for('admin.signup') }}" class="btn btn-secondary">Sign Up</a>
+        </div>
+    </div>
+    {{ bootstrap.load_js() }}
+</body>
+</html>

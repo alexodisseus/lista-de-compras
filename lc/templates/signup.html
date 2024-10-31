@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up</title>
+    {{ bootstrap.load_css() }}
+    <style>
+        html, body {
+            height: 100%;
+        }
+        .full-height {
+            height: 100vh; /* 100% da altura da viewport */
+        }
+    </style>
+</head>
+<body>
+    <div class="container d-flex justify-content-center align-items-center full-height">
+        <div class="text-center">
+            <h1>Sign Up</h1>
+            <form method="post" action="{{ url_for('admin.signup') }}">
+                <div class="form-group">
+                    <input type="text" class="form-control" name="name" id="name" placeholder="Nome de Usuário" required>
+                </div>
+                <div class="form-group">
+                    <input type="email" class="form-control" name="email" id="email" placeholder="Email" required>
+                </div>
+                <div class="form-group">
+                    <input type="password" class="form-control" name="password" id="password" placeholder="Senha" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Cadastrar</button>
+                <a href="/" class="btn btn-secondary">Voltar</a>
+            </form>
+                <h1>Cadastro</h1>
+    
+        </div>
+    </div>
+    {{ bootstrap.load_js() }}
+</body>
+</html>

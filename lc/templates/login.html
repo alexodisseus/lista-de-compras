@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    {{ bootstrap.load_css() }}
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <div class="alert alert-info">
+                {% for message in messages %}
+                    {{ message }}<br>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
+    <style>
+        html, body {
+            height: 100%;
+        }
+        .full-height {
+            height: 100vh; /* 100% da altura da viewport */
+        }
+    </style>
+</head>
+<body>
+    <div class="container d-flex justify-content-center align-items-center full-height">
+        <div class="text-center">
+            <h1>Login</h1>
+            <form method="post" action="{{ url_for('admin.login') }}">
+                <div class="form-group">
+                    <input type="email" class="form-control" name="email" id="email" placeholder="Email" required>
+                </div>
+                <div class="form-group">
+                    <input type="password" class="form-control" id="password" name="password" placeholder="Senha" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Entrar</button>
+                <a href="/" class="btn btn-secondary">Voltar</a>
+            </form>
+           
+
+        </div>
+    </div>
+    {{ bootstrap.load_js() }}
+</body>
+</html>
+
