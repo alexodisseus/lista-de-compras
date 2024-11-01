@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Consulta de Produto</title>
+    {{ bootstrap.load_css() }}
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            max-width: 400px;
+            width: 100%;
+        }
+        .product-info {
+            margin-top: 20px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="text-center">Consulta de Produto</h1>
+        <form method="POST" action="{{ url_for('itens.search') }}">
+            <div class="form-group">
+                <label for="ean_code">Digite o código EAN:</label>
+                <input type="text" class="form-control" id="ean_code" name="ean_code" required>
+            </div>
+            <button type="submit" class="btn btn-primary btn-block">Consultar</button>
+        </form>
+
+        {% if product_info %}
+            <div class="product-info">
+                <h2>{{ product_info.name }}</h2>
+                {% if product_info.has_image %}
+                    <img src="{{ product_info.image_url }}" alt="{{ product_info.name }}" class="img-fluid">
+                {% else %}
+                    <p>Imagem não disponível.</p>
+                {% endif %}
+                <p><strong>Descrição:</strong> {{ product_info.description }}</p>
+                <p><strong>Quantidade:</strong> {{ product_info.quantity }}</p>
+            </div>
+        {% endif %}
+    </div>
+    {{ bootstrap.load_js() }}
+</body>
+</html>

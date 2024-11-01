@@ -7,9 +7,14 @@ import model
 
 admin = Blueprint('admin', __name__, url_prefix='/')
 
+
 @admin.route('/', methods=['GET'])
 def index():
-    return render_template('index.html')
+    print(session)  # Isso mostrará o que está na sessão
+    print("asd")
+    if 'userid' in session:  # Verifica se o usuário está logado
+        return redirect(url_for('itens.index'))  # Redireciona para listas.index
+    return render_template('index.html')  # Se não estiver logado, renderiza a página inicial
 
 
 
@@ -58,7 +63,7 @@ def login():
     return render_template('login.html')
 
 
-@admin.route('/logout', methods=['POST'])
+@admin.route('/logout', methods=['GET'])
 def logout():
     session.pop('username', None)
     session.pop('userid', None)

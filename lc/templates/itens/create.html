@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastrar Itens</title>
+    {{ bootstrap.load_css() }}
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            max-width: 500px;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="text-center">Cadastrar Item</h1>
+        <form method="POST">
+            <div class="form-group">
+                <label for="nome">Nome</label>
+                <input type="text" class="form-control" id="nome" name="nome" required>
+            </div>
+            <div class="form-group">
+                <label for="tag">Tag (opcional)</label>
+                <input type="text" class="form-control" id="tag" name="tag">
+            </div>
+            <div class="form-group">
+                <label for="descricao">Descrição (opcional)</label>
+                <textarea class="form-control" id="descricao" name="descricao"></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary btn-block">Cadastrar</button>
+        </form>
+    </div>
+    {{ bootstrap.load_js() }}
+</body>
+</html>

@@ -1,8 +1,8 @@
 import admin
 #import shareholder
 #import quote
-#import report
-#import closure
+import itens
+import lists
 import people
 from flask_bootstrap import Bootstrap
 import model
@@ -20,9 +20,9 @@ app.secret_key = b'guerra aos senhores'
 
 #shareholder.configure(app)
 #quote.configure(app)
-#report.configure(app)
-#closure.configure(app)
 Bootstrap(app)
+itens.configure(app)
+lists.configure(app)
 people.configure(app)
 admin.configure(app)
 db.configure(app)

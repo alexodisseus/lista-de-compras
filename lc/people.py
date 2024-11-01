@@ -3,7 +3,7 @@ import inspect
 from flask import Blueprint, render_template, request, redirect, url_for, flash
 from model import create_person, list_person, update_person, delete_person, get_person, Person
 
-people = Blueprint('people', __name__, url_prefix='/')
+people = Blueprint('people', __name__, url_prefix='/pessoas')
 
 
 @people.route('/', methods=['GET'])

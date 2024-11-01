@@ -45,6 +45,12 @@ class Todo(SQLModel, table=True):
     person: Optional[Person] = Relationship(back_populates='todos')
 
 
+class Itens(SQLModel, table=True):
+    id: int = Field(default=None, primary_key=True)
+    nome: str
+    tag: Optional[str] = Field(default=None)
+    descricao: Optional[str] = Field(default=None)
+
 
 engine = create_engine('sqlite:///db.db')
 
@@ -134,3 +140,54 @@ def read_user(email: str) -> Optional[User]:
     with Session(engine) as session:
         user = session.query(User).filter(User.email == email).first()
     return user
+
+
+
+
+
+
+
+#fincao para itens
+
+
+def create_item(nome: str, tag: Optional[str] = None, descricao: Optional[str] = None) -> Itens:
+    item = Itens(nome=nome, tag=tag, descricao=descricao)
+    with Session(engine) as session:
+        session.add(item)
+        session.commit()
+        session.refresh(item)
+    return item
+
+def list_items() -> List[Itens]:
+    with Session(engine) as session:
+        items = session.exec(select(Itens)).all()
+    return items
+
+def edit_item(item_id: int, nome: Optional[str] = None, tag: Optional[str] = None, descricao: Optional[str] = None) -> Optional[Itens]:
+    with Session(engine) as session:
+        item = session.get(Itens, item_id)
+        if item:
+            if nome is not None:
+                item.nome = nome
+            if tag is not None:
+                item.tag = tag
+            if descricao is not None:
+                item.descricao = descricao
+            session.commit()
+            session.refresh(item)
+            return item
+    return None
+
+def view_item(item_id: int) -> Optional[Itens]:
+    with Session(engine) as session:
+        item = session.get(Itens, item_id)
+    return item
+
+def delete_item(item_id: int) -> bool:
+    with Session(engine) as session:
+        item = session.get(Itens, item_id)
+        if item:
+            session.delete(item)
+            session.commit()
+            return True
+    return False
