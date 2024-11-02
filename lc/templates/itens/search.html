@@ -35,17 +35,27 @@
         </form>
 
         {% if product_info %}
-            <div class="product-info">
-                <h2>{{ product_info.name }}</h2>
+            <div class="media text-muted pt-3">
                 {% if product_info.has_image %}
-                    <img src="{{ product_info.image_url }}" alt="{{ product_info.name }}" class="img-fluid">
+                    <img src="{{ product_info.image_url }}" alt="{{ product_info.name }}" class="mr-3 rounded" width="64" height="64">
                 {% else %}
-                    <p>Imagem não disponível.</p>
+                    <svg class="bd-placeholder-img mr-3 rounded" width="64" height="64" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" focusable="false" role="img" aria-label="Imagem não disponível">
+                        <rect width="100%" height="100%" fill="#007bff"/>
+                        <text x="50%" y="50%" fill="#ffffff" dy=".3em">Imagem não disponível</text>
+                    </svg>
                 {% endif %}
-                <p><strong>Descrição:</strong> {{ product_info.description }}</p>
-                <p><strong>Quantidade:</strong> {{ product_info.quantity }}</p>
+                <div class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
+                    <div class="d-flex justify-content-between align-items-center w-100">
+                        <strong class="text-gray-dark">{{ product_info.name }}</strong>
+                        <a href="{{ url_for('itens.create', name=product_info.name,  description=product_info.description, quantity=product_info.quantity) }}" class="btn btn-link">Adicionar</a>
+
+                    </div>
+                    <span class="d-block">{{ product_info.description }}</span>
+                    <span class="d-block"><strong>Quantidade:</strong> {{ product_info.quantity }}</span>
+                </div>
             </div>
         {% endif %}
+
     </div>
     {{ bootstrap.load_js() }}
 </body>

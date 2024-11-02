@@ -13,9 +13,24 @@ def index():
     return render_template('itens/index.html')  
 
 
-@itens.route('/cadastrar', methods=['GET'])
-def crate():
-    return render_template('itens/create.html')  
+@itens.route('/cadastrar', methods=['GET', 'POST'])
+def create():
+    product_name = request.args.get('name', '')
+    product_image = request.args.get('image', '')
+    product_description = request.args.get('description', '')
+    product_quantity = request.args.get('quantity', '')
+
+    if request.method == 'POST':
+        # Aqui você pode processar o cadastro do item
+        # Exemplo: salvar no banco de dados
+        flash('Item cadastrado com sucesso!')
+        return redirect(url_for('itens.index'))
+
+    return render_template('itens/create.html', 
+                           product_name=product_name, 
+                           product_image=product_image, 
+                           product_description=product_description, 
+                           product_quantity=product_quantity)
 
 
 
@@ -36,6 +51,7 @@ def get_product_info(ean_code: str):
     response = requests.get(f'https://world.openfoodfacts.org/api/v0/product/{ean_code}.json')
     if response.status_code == 200:
         product = response.json().get('product', {})
+        
         return {
             'name': product.get('product_name', 'N/A'),
             'image_url': product.get('image_url', ''),
