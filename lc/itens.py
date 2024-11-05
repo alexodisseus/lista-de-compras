@@ -21,8 +21,13 @@ def create():
     product_quantity = request.args.get('quantity', '')
 
     if request.method == 'POST':
-        # Aqui você pode processar o cadastro do item
-        # Exemplo: salvar no banco de dados
+        
+        product_name = request.form.get('nome', '')
+        product_description = request.form.get('descricao', '')
+        product_quantity = request.form.get('quantidade', '')
+        product_tag = request.form.get('tag', '')
+        
+        model.create_item( product_name, product_tag, product_description , product_quantity)
         flash('Item cadastrado com sucesso!')
         return redirect(url_for('itens.index'))
 

@@ -5,12 +5,21 @@ from typing import Optional, List
 from sqlmodel import SQLModel ,or_, Field, create_engine, Session, select, Relationship
 from sqlalchemy import func
 from werkzeug.security import generate_password_hash, check_password_hash
+from datetime import datetime
+
+
+
 
 
 db = SQLModel()
 
 def configure(app):
     app.db = db
+
+
+
+
+
 
 
 
@@ -50,6 +59,21 @@ class Itens(SQLModel, table=True):
     nome: str
     tag: Optional[str] = Field(default=None)
     descricao: Optional[str] = Field(default=None)
+    quantity: Optional[str] = Field(default=None)
+
+
+
+class Lists(SQLModel, table=True):
+    id: int = Field(default=None, primary_key=True)  # Um campo id para ser a chave primária
+    name: str  # Nome da lista
+    data_criacao: datetime = Field(default_factory=datetime.utcnow)  # Data de criação com valor padrão
+    data_evento: datetime  # Data do evento
+    descricao: str  # Descrição da lista
+
+
+
+
+
 
 
 engine = create_engine('sqlite:///db.db')
@@ -150,8 +174,8 @@ def read_user(email: str) -> Optional[User]:
 #fincao para itens
 
 
-def create_item(nome: str, tag: Optional[str] = None, descricao: Optional[str] = None) -> Itens:
-    item = Itens(nome=nome, tag=tag, descricao=descricao)
+def create_item(nome: str, tag: Optional[str] = None, descricao: Optional[str] = None, quantity: Optional[str] = None) -> Itens:
+    item = Itens(nome=nome, tag=tag, descricao=descricao , quantity = quantity)
     with Session(engine) as session:
         session.add(item)
         session.commit()
